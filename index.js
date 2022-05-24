@@ -30,13 +30,17 @@ function readlineCallback(alaaTvUrl) {
       if (args.includes("-d")) {
         return spawn("mpv", [urls[0]]);
       }
-      readline.question("mpv which url? (0 = none): ", (mpvIndex) => {
-        mpvIndex = +mpvIndex;
-        if (!urls[mpvIndex - 1]) return readline.close();
+      readline.question(
+        "mpv which url? (0 = none, default = 1): ",
+        (mpvIndex) => {
+          if (!mpvIndex) mpvIndex = 1;
+          mpvIndex = +mpvIndex;
+          if (!urls[mpvIndex - 1]) return readline.close();
 
-        const mpv = spawn("mpv", [urls[mpvIndex - 1]]);
-        readline.close();
-      });
+          const mpv = spawn("mpv", [urls[mpvIndex - 1]]);
+          readline.close();
+        }
+      );
     })
     .catch((err) => {
       console.log(err);
