@@ -1,8 +1,7 @@
-import fs, { link } from "fs";
 import got from "got";
 import { JSDOM } from "jsdom";
 import ReadLine from "readline";
-import { exec, spawn } from "child_process";
+import { spawn } from "child_process";
 const args = process.argv.slice(2);
 
 const readline = ReadLine.createInterface({
@@ -28,7 +27,9 @@ function readlineCallback(alaaTvUrl) {
         console.log(url);
       });
       if (args.includes("-d")) {
-        return spawn("mpv", [urls[0]]);
+        spawn("mpv", [urls[0]]);
+        readline.close();
+        return;
       }
       readline.question(
         "mpv which url? (0 = none, default = 1): ",
