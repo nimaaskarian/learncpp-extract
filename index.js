@@ -31,7 +31,7 @@ function readlineCallback(alaaTvUrl) {
         return url;
       });
       if (args.includes("-d")) {
-        clipboard.writeSync(urls[1]);
+        clipboard.writeSync(urls[0]);
         closeReadline();
         return;
       }
