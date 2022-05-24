@@ -1,13 +1,18 @@
 import got from "got";
 import { JSDOM } from "jsdom";
 import ReadLine from "readline";
-import { spawn } from "child_process";
+import { exec } from "child_process";
+import clipboard from "clipboardy";
 const args = process.argv.slice(2);
 
 const readline = ReadLine.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
+function closeReadline() {
+  readline.close();
+  readline.removeAllListeners();
+}
 if (args[0] !== "-d" && args[0]) {
   readlineCallback(args[0]);
 } else {
@@ -21,30 +26,32 @@ function readlineCallback(alaaTvUrl) {
       const urls = [
         ...dom.window.document.querySelectorAll(".a--video-wraper source"),
       ].map((videoSource) => {
-        return videoSource.src;
-      });
-      urls.forEach((url) => {
+        const url = videoSource.src;
         console.log(url);
+        return url;
       });
       if (args.includes("-d")) {
-        spawn("mpv", [urls[0]]);
-        readline.close();
+        clipboard.writeSync(urls[1]);
+        closeReadline();
         return;
       }
       readline.question(
-        "mpv which url? (0 = none, default = 1): ",
-        (mpvIndex) => {
-          if (!mpvIndex) mpvIndex = 1;
-          mpvIndex = +mpvIndex;
-          if (!urls[mpvIndex - 1]) return readline.close();
+        "copy which url? (0 = none, default = 1): ",
+        (copyIndex) => {
+          if (!copyIndex) copyIndex = 1;
+          copyIndex = +copyIndex;
+          const selectedUrl = urls[copyIndex - 1];
+          if (!selectedUrl) {
+            closeReadline();
+            return;
+          }
 
-          const mpv = spawn("mpv", [urls[mpvIndex - 1]]);
-          readline.close();
+          clipboard.writeSync(selectedUrl);
         }
       );
     })
     .catch((err) => {
       console.log(err);
-      readline.close();
+      closeReadline();
     });
 }
