@@ -20,5 +20,5 @@ Clone this repository using `git clone https://github.com/nimaaskarian/alaatv.gi
 
 ## Usage
 
-After installing the dependencies, If you're in the parent directory of alaatv, you can run `node alaatv` or `node alaatv [alaatv-url]` to scrape video urls.
+After installing the dependencies, If you're in the parent directory of `alaatv`, you can run `node alaatv` or `node alaatv [alaatv-url]` or `node .` or `node . [alaatv-url]` if you are in the `alaatv` direcotry to scrape video urls.
 You can also use `-d` option to copy first link (it's usually HD_720). If you don't, a prompt will ask you which url you want to copy.
