@@ -9,6 +9,22 @@ const readline = ReadLine.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
+class UrlList {
+  constructor(sourceDomArray) {
+    this.urls = [...sourceDomArray].map(({ src }) => src);
+  }
+  copy(index) {
+    const urlToCopy = this.urls[index];
+    if (urlToCopy) {
+      console.log(`Copied ${index + 1}`);
+      clipboard.writeSync(this.urls[index]);
+    }
+    closeReadline();
+  }
+  printAll() {
+    this.urls.forEach((url,index) => console.log(`${index+1}: ${url}`));
+  }
+}
 function closeReadline() {
   readline.close();
   readline.removeAllListeners();
@@ -23,30 +39,19 @@ function readlineCallback(alaaTvUrl) {
   got(alaaTvUrl)
     .then((response) => {
       const dom = new JSDOM(response.body);
-      const urls = [
-        ...dom.window.document.querySelectorAll(".a--video-wraper source"),
-      ].map((videoSource) => {
-        const url = videoSource.src;
-        console.log(url);
-        return url;
-      });
+      const urls = new UrlList(
+        dom.window.document.querySelectorAll(".a--video-wraper source")
+      );
+      urls.printAll();
       if (args.includes("-d")) {
-        clipboard.writeSync(urls[0]);
-        closeReadline();
-        return;
+        return urls.copy(0);
       }
       readline.question(
-        "copy which url? (0 = none, default = 1): ",
+        "Which url do you want to copy? (0 = none, default = 1): ",
         (copyIndex) => {
           if (!copyIndex) copyIndex = 1;
           copyIndex = +copyIndex;
-          const selectedUrl = urls[copyIndex - 1];
-          if (!selectedUrl) {
-            closeReadline();
-            return;
-          }
-
-          clipboard.writeSync(selectedUrl);
+          urls.copy(copyIndex - 1);
         }
       );
     })
