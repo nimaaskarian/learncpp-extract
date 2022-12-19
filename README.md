@@ -12,8 +12,8 @@ A little node script to scrap learncpp url and names for pdf conversion, that th
 ### Runtime
 
 - [nodejs](https://nodejs.org/en/) (to run .js files in cli)
-- npm dependencies (installed using `npm install` command in your terminal, cmd or PowerShell when inside `alaatv`s directory)
-- [wkhtmltopdf](https://github.com/wkhtmltopdf/wkhtmltopdf) (to convert urls to html)
+- npm dependencies (installed using `npm install` command in your terminal, cmd or PowerShell when inside `learncpp-extract`s directory)
+- [wkhtmltopdf](https://github.com/wkhtmltopdf/wkhtmltopdf) (to convert urls to pdf)
 
 ## Installation
 
