@@ -1,6 +1,6 @@
 # learncpp extract
 
-A little script to scrap learncpp url and names for pdf conversion.
+A little node script to scrap learncpp url and names for pdf conversion, that then pass them to a shell script for conversion using wkhtmltopdf
 
 ## Dependencies
 
